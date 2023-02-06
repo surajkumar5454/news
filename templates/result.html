@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+    <title>News Result</title>
+  </head>
+  <body >
+  <div >
+    <div align="center" class="font-medium">
+      <h1>RESULT</h1>
+    </div>
+
+    <div class="bg-gray-100 mx-12 my-12 ">
+      <table class="table-auto">
+        <thead>
+          <tr>
+            <th class="px-4 py-2 cursor-pointer" onclick="sortTable(0)">Title</th>
+            <th class="px-4 py-2 cursor-pointer" onclick="sortTable(1)">Description</th>
+            <th class="px-4 py-2 cursor-pointer" onclick="sortTable(2)">Url</th>
+            <th class="px-4 py-2 cursor-pointer" onclick="sortTable(3)">Publish Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in data %}
+          <tr>
+            <td class="border px-4 py-2">{{ row['title'] }}</td>
+            <td class="border px-4 py-2">{{ row['description'] }}</td>
+            <td class="border px-4 py-2"><a href="{{ row['url'] }}" target="_blank">{{ row['url'] }}</a></td>
+            <td class="border px-4 py-2">{{ row['publishedAt'] }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    </div>
+  </body>
+<script>
+  function sortTable(n) {
+    var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+    table = document.getElementsByTagName("table")[0];
+    switching = true;
+    dir = "asc";
+    while (switching) {
+      switching = false;
+      rows = table.getElementsByTagName("tr");
+      for (i = 1; i < (rows.length - 1); i++) {
+        shouldSwitch = false;
+        x = rows[i].getElementsByTagName("td")[n];
+        y = rows[i + 1].getElementsByTagName("td")[n];
+        if (dir == "asc") {
+          if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+            shouldSwitch= true;
+            break;
+          }
+        } else if (dir == "desc") {
+          if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+            shouldSwitch = true;
+            break;
+          }
+        }
+      }
+      if (shouldSwitch) {
+        rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+        switching = true;
+        switchcount ++;
+      } else {
+        if (switchcount == 0 && dir == "asc") {
+          dir = "desc";
+          switching = true;
+        }
+      }
+    }
+  }
+</script>
+</html>
